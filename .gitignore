@@ -1,0 +1,10 @@
+## Intelij Stuff
+*.iml
+*.idea
+
+## Maven Build
+/fraud-evaluator-*/target/
+/target
+
+## Mac Stuff
+.DS_Store
