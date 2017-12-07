@@ -1,5 +1,8 @@
 package io.igu.playground.validation;
 
+import static io.igu.playground.validation.UserValidation.emailTaken;
+import static io.igu.playground.validation.UserValidation.usernameTaken;
+
 public class Application {
 
     public static void main(String... args) {
@@ -14,10 +17,10 @@ public class Application {
         );
 
         final UserValidation validation = UserValidation.empty.
-                and(UserValidation.emailTaken).
-                and(UserValidation.usernameTaken);
+                and(emailTaken).
+                and(usernameTaken);
 
-        System.out.println(validation.apply(user)); // [EMAIL_INUSE, USERNAME_TAKEN]
+        System.out.println(validation.apply(user).getReasons()); // [EMAIL_INUSE, USERNAME_TAKEN]
     }
 
 }
