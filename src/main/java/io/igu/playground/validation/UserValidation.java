@@ -11,8 +11,8 @@ public interface UserValidation extends Function<User, ValidationResult> {
     UserValidation empty = $ -> valid();
 
     UserValidation usernameTaken = rule(Trigger.isUsernameInUse, Rules.USERNAME_TAKEN);
-
     UserValidation emailTaken = rule(Trigger.isBillGatesEmail, Rules.EMAIL_INUSE);
+    UserValidation underage = rule(Trigger.isUnderAge.and(Trigger.noConsent), Rules.UNDERAGE);
 
     static UserValidation rule(final Predicate<User> predicate, final Rules rule) {
         return user -> predicate.test(user) ? invalid(rule) : valid();
@@ -25,6 +25,14 @@ public interface UserValidation extends Function<User, ValidationResult> {
             final ValidationResult right = other.apply(user);
 
             return left.merge(right);
+        };
+    }
+
+    default UserValidation or(final UserValidation other) {
+        return user -> {
+            final ValidationResult left = this.apply(user);
+
+            return left.isValid() ? other.apply(user) : left;
         };
     }
 }

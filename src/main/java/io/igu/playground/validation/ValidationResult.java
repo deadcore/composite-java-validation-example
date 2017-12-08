@@ -10,6 +10,8 @@ public interface ValidationResult {
 
     ValidationResult merge(final ValidationResult right);
 
+    boolean isValid();
+
     static ValidationResult valid() {
         return Results.valid();
     }
@@ -46,12 +48,22 @@ public interface ValidationResult {
             return ValidationResult.invalid(mutation);
         }
 
+        @Override
+        public boolean isValid() {
+            return false;
+        }
+
     }
 
     class Valid implements ValidationResult {
         @Override
         public ValidationResult merge(final ValidationResult right) {
             return right;
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
         }
     }
 
